@@ -29,7 +29,7 @@ bin/
 .DS_Store
 
 *.iml
-.idea
+.idea\
 librarynew.iml
 logs\
 out\
