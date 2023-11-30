@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval="60">
+<Configuration status="WARN">
     <Appenders>
-        <Console name="Console-Appender" target="SYSTEM_OUT">
-            <PatternLayout>
-                <pattern>
-                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
-                </pattern>>
-            </PatternLayout>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <File name="File-Appender" fileName="logs/xmlfilelog.log" >
+        <File name="xmlfilelog" fileName="logs/xmlfilelog.log" immediateFlush="true" append="true">>
             <PatternLayout>
-                <pattern>
-                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
-                </pattern>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>
     <Loggers>
         <Logger name="log4j2.configuration" level="debug">
-            <AppenderRef ref="File-Appender" level="error"/>
+            <AppenderRef ref="xmlfilelog" level="error"/>
         </Logger>
-        <Root level="debug">
-            <AppenderRef ref="Console-Appender"/>
+        <Root level="info">
+            <AppenderRef ref="xmlfilelog" level="debug"/>
+            <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
 </Configuration>
