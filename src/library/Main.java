@@ -1,4 +1,4 @@
-package main;
+package library;
 
 import exceptions.PhoneNoNotValidException;
 import items.Book;
@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import peoples.Member;
 
 public class Main {
-    private static final Logger LOGGER = LogManager.getLogger(main.Main.class);
+    private static final Logger LOGGER = LogManager.getLogger(library.Main.class);
 
     public static void main(String[] args) {
         Member member = new Member("amena","kureshi","amena.k@gmail.com","1565622665");
@@ -24,5 +24,6 @@ public class Main {
         Library.printAllBookInfo();
         Library.printAllMemberInfo();
         Library.printLibraryInfo();
+        Library.searchBook();
     }
 }

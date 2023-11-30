@@ -1,4 +1,4 @@
-package main;
+package library;
 
 import exceptions.*;
 import items.*;
@@ -6,6 +6,7 @@ import linkedlist.CustomLinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import peoples.*;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 public class Library implements ILibrary {
 
-    private static final Logger LOGGER = LogManager.getLogger(main.Library.class);
+    private static final Logger LOGGER = LogManager.getLogger(library.Library.class);
     private static final String libraryName = "Billerica Public Library";
     private static final String website = "https://billericalibrary.org/";
     private static final String address = "15 Concord Rd, Billerica, MA 01821";
@@ -63,11 +64,13 @@ public class Library implements ILibrary {
         return newspaperList;
     }
 
-    @Override public void addBook(Book book) {
+    @Override
+    public void addBook(Book book) {
         bookList.add(book);
     }
 
-    @Override public boolean deleteBook(Book book, Staff staff) throws NotAuthorizedException {
+    @Override
+    public boolean deleteBook(Book book, Staff staff) throws NotAuthorizedException {
         if (staff.getDesignation().equals("Manager")) {
             if (this.getBookList().contains(book)) {
                 bookList.remove(book);
@@ -77,7 +80,8 @@ public class Library implements ILibrary {
         throw new NotAuthorizedException("You are not authorized to delete a book");
     }
 
-    @Override public void addMember(Member member) throws PhoneNoNotValidException {
+    @Override
+    public void addMember(Member member) throws PhoneNoNotValidException {
         if (member.getPhoneNo().length() == 10) {
             memberList.add(member);
             LOGGER.info("member added");
@@ -86,7 +90,8 @@ public class Library implements ILibrary {
         }
     }
 
-    @Override public final boolean deleteMember(Staff staff, Member member) throws NotAuthorizedException {
+    @Override
+    public final boolean deleteMember(Staff staff, Member member) throws NotAuthorizedException {
         if (staff.getDesignation().equals("Manager")) {
             if (this.getMemberList().contains(member)) {
                 getMemberList().remove(member);
@@ -96,7 +101,8 @@ public class Library implements ILibrary {
         throw new NotAuthorizedException("You are not authorized to delete member");
     }
 
-    @Override public boolean issue(Member member, Book book) throws BorrowingBookLimitOverException {
+    @Override
+    public boolean issue(Member member, Book book) throws BorrowingBookLimitOverException {
         if (member.getIssuedBooksCount() >= 3) {
             throw new BorrowingBookLimitOverException("You can't issue more than three books");
         } else {
@@ -106,7 +112,8 @@ public class Library implements ILibrary {
         }
     }
 
-    @Override public boolean reissue(Member member, Book book) throws ReissueNotValidException {
+    @Override
+    public boolean reissue(Member member, Book book) throws ReissueNotValidException {
         try {
             int reissueCount = 0;
             if (reissueCount < 1) {
@@ -121,7 +128,8 @@ public class Library implements ILibrary {
         }
     }
 
-    @Override public boolean returnBook(Member member, Book book) {
+    @Override
+    public boolean returnBook(Member member, Book book) {
         if (member.getIssuedBooks().contains(book)) {
             bookList.add(book);
             member.removeIssuedBook(book);
@@ -130,22 +138,29 @@ public class Library implements ILibrary {
         return false;
     }
 
-    public static void searchBook(Book book) {
+    public static void searchBook() {
         try (Scanner sc = new Scanner(System.in)) {
             LOGGER.info("search by title");
+            boolean allFound = false;
             String searchTitle = sc.nextLine();                         //This may throw exception if user don't put input
             for (Book i : bookList.getAll()) {
-                if (book.getTitle().contains(searchTitle)) {
-                    LOGGER.info("Search result:  " + book);
+                boolean isFound = i.getTitle().contains(searchTitle);
+                if (isFound) {
+                    LOGGER.info("Search result:  " + i);
+                    allFound = true;
                 }
             }
-            LOGGER.info("no Book found");
+            if (!allFound) {
+                LOGGER.info("no Book found");
+            }
+
         } catch (Exception e) {
             LOGGER.info("Give valid search input");
         }
     }
 
-    @Override public void addNewspaper(Newspaper newspaper) {
+    @Override
+    public void addNewspaper(Newspaper newspaper) {
         try {
             Scanner sc = new Scanner(System.in);
             LOGGER.info("Enter name of newspaper");
