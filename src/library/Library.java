@@ -134,7 +134,6 @@ public class Library implements ILibrary {
     }
 
     public static List<Book> searchBook(String bookTitle) throws Exception {
-        try {
             for (Book i : bookList.getAll()) {
                 boolean isFound = i.getTitle().contains(bookTitle);
                 if (isFound) {
@@ -142,11 +141,7 @@ public class Library implements ILibrary {
                     bookFound.add(i);
                     return bookFound;
                 }
-            }
-        } catch(Exception e) {
-            throw new Exception("No Book Found");
-        }
-        return null;
+            } throw new Exception("No Book Found");
     }
 
     @Override
