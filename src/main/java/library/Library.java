@@ -111,11 +111,9 @@ public class Library implements ILibrary {
     }
 
     @Override
-    public boolean reissue(Member member, Book book) throws ReissueNotValidException {
+    public boolean reissue(Member member, Book book) {
         try {
-            int reissueCount = 0;
             this.issue(member, book);
-            reissueCount++;
             return true;
         } catch (BorrowingBookLimitOverException e) {
             LOGGER.error("Your are exceeding borrowing book limit");
