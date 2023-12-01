@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="xmlfilelog" fileName="logs/xmlfilelog.log" immediateFlush="true" append="true">>
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="log4j2.configuration" level="debug">
+            <AppenderRef ref="xmlfilelog" level="error"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="xmlfilelog" level="debug"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
