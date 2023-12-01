@@ -143,10 +143,10 @@ public class Library implements ILibrary {
                     return bookFound;
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch(Exception e) {
+            throw new Exception("No Book Found");
         }
-        throw new Exception("No Book Found");
+        return null;
     }
 
     @Override
