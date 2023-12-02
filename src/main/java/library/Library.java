@@ -131,15 +131,17 @@ public class Library implements ILibrary {
         return false;
     }
 
-    public static List<Book> searchBook(String bookTitle) throws Exception {
-            for (Book i : bookList.getAll()) {
-                boolean isFound = i.getTitle().contains(bookTitle);
-                if (isFound) {
-                    List<Book> bookFound = new ArrayList<>();
-                    bookFound.add(i);
-                    return bookFound;
-                }
-            } throw new Exception("No Book Found");
+    public static List<Book> searchBook(String bookTitle) throws NoBookFound {
+        List<Book> searchResult = new ArrayList<>();
+        for (Book i : bookList.getAll()) {
+            if (i.getTitle().contains(bookTitle)) {
+                searchResult.add(i);
+            }
+        }
+        if (searchResult.isEmpty()) {
+            throw new NoBookFound("No Book found");
+        }
+        return searchResult;
     }
 
     @Override

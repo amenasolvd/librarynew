@@ -3,7 +3,7 @@ package library;
 import exceptions.BorrowingBookLimitOverException;
 import exceptions.NotAuthorizedException;
 import exceptions.PhoneNoNotValidException;
-import exceptions.ReissueNotValidException;
+import exceptions.NoBookFound;
 import items.Book;
 import items.Newspaper;
 import peoples.Member;
@@ -16,7 +16,7 @@ public interface ILibrary {
     void addMember(Member member) throws PhoneNoNotValidException;
     boolean deleteMember(Staff staff, Member member) throws NotAuthorizedException;
     boolean issue(Member member, Book book) throws BorrowingBookLimitOverException;
-    boolean reissue(Member member, Book book) throws ReissueNotValidException;
+    boolean reissue(Member member, Book book) throws NoBookFound;
     boolean returnBook(Member member, Book book);
     void addNewspaper(Newspaper newspaper);
 }
