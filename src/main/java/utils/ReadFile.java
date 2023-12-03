@@ -30,7 +30,7 @@ public class ReadFile {
 
     public void writeCountUniqueWords() {
         try {
-            FileUtils.write(file, " No. of Unique Words are: " + Integer.toString(countUniqueWords()), "UTF-8", true);
+            FileUtils.write(file, "\n No. of Unique Words are: " + Integer.toString(countUniqueWords()), "UTF-8", true);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
