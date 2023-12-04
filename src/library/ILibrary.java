@@ -1,4 +1,4 @@
-package main;
+package library;
 
 import exceptions.BorrowingBookLimitOverException;
 import exceptions.NotAuthorizedException;

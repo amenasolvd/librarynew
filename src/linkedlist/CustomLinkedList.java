@@ -11,16 +11,16 @@ public class CustomLinkedList <T> implements ICustomLinkedList<T> {
     public CustomLinkedList() {
     }
 
-    int getLength() {
+    public int getLength() {
         return this.length;
     }
 
-    boolean isEmpty() {
-        // Checking if next node points to null
+    public boolean isEmpty() {
         return head == null;
     }
 
-    @Override public void add(T data) {
+    @Override
+    public void add(T data) {
         Node<T> newNode = new Node<>(data);
         if (this.head == null) {
             head = newNode;
@@ -34,7 +34,8 @@ public class CustomLinkedList <T> implements ICustomLinkedList<T> {
         }
     }
 
-    @Override public void remove(T data) {
+    @Override
+    public void remove(T data) {
         if (head == null) {
             return;
         }
@@ -51,7 +52,8 @@ public class CustomLinkedList <T> implements ICustomLinkedList<T> {
         }
     }
 
-    @Override public List<T> getAll() {
+    @Override
+    public List<T> getAll() {
         List<T> newList = new ArrayList<>();
         Node<T> current = head;
         while (current != null) {
@@ -61,7 +63,8 @@ public class CustomLinkedList <T> implements ICustomLinkedList<T> {
         return newList;
     }
 
-    @Override public boolean contains(T data) {
+    @Override
+    public boolean contains(T data) {
         if (head != null) {
             Node<T> current = head;
             while (current.getNextNode() != null || current != data) {

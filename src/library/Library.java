@@ -1,4 +1,4 @@
-package main;
+package library;
 
 import exceptions.*;
 import items.*;
@@ -6,17 +6,16 @@ import linkedlist.CustomLinkedList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import peoples.*;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Library implements ILibrary {
 
-    private static final Logger LOGGER = LogManager.getLogger(main.Library.class);
+    private static final Logger LOGGER = LogManager.getLogger(library.Library.class);
     private static final String libraryName = "Billerica Public Library";
     private static final String website = "https://billericalibrary.org/";
     private static final String address = "15 Concord Rd, Billerica, MA 01821";
@@ -63,11 +62,13 @@ public class Library implements ILibrary {
         return newspaperList;
     }
 
-    @Override public void addBook(Book book) {
+    @Override
+    public void addBook(Book book) {
         bookList.add(book);
     }
 
-    @Override public boolean deleteBook(Book book, Staff staff) throws NotAuthorizedException {
+    @Override
+    public boolean deleteBook(Book book, Staff staff) throws NotAuthorizedException {
         if (staff.getDesignation().equals("Manager")) {
             if (this.getBookList().contains(book)) {
                 bookList.remove(book);
@@ -77,7 +78,8 @@ public class Library implements ILibrary {
         throw new NotAuthorizedException("You are not authorized to delete a book");
     }
 
-    @Override public void addMember(Member member) throws PhoneNoNotValidException {
+    @Override
+    public void addMember(Member member) throws PhoneNoNotValidException {
         if (member.getPhoneNo().length() == 10) {
             memberList.add(member);
             LOGGER.info("member added");
@@ -86,7 +88,8 @@ public class Library implements ILibrary {
         }
     }
 
-    @Override public final boolean deleteMember(Staff staff, Member member) throws NotAuthorizedException {
+    @Override
+    public final boolean deleteMember(Staff staff, Member member) throws NotAuthorizedException {
         if (staff.getDesignation().equals("Manager")) {
             if (this.getMemberList().contains(member)) {
                 getMemberList().remove(member);
@@ -96,7 +99,8 @@ public class Library implements ILibrary {
         throw new NotAuthorizedException("You are not authorized to delete member");
     }
 
-    @Override public boolean issue(Member member, Book book) throws BorrowingBookLimitOverException {
+    @Override
+    public boolean issue(Member member, Book book) throws BorrowingBookLimitOverException {
         if (member.getIssuedBooksCount() >= 3) {
             throw new BorrowingBookLimitOverException("You can't issue more than three books");
         } else {
@@ -106,22 +110,21 @@ public class Library implements ILibrary {
         }
     }
 
-    @Override public boolean reissue(Member member, Book book) throws ReissueNotValidException {
+    @Override
+    public boolean reissue(Member member, Book book) throws ReissueNotValidException {
         try {
             int reissueCount = 0;
-            if (reissueCount < 1) {
-                this.issue(member, book);
-                reissueCount++;
-                return true;
-            }
-            throw new ReissueNotValidException("Reissue is allowed only once");
-        } catch (BorrowingBookLimitOverException | ReissueNotValidException e) {
+            this.issue(member, book);
+            reissueCount++;
+            return true;
+        } catch (BorrowingBookLimitOverException e) {
             LOGGER.error("Your are exceeding borrowing book limit");
             return false;
         }
     }
 
-    @Override public boolean returnBook(Member member, Book book) {
+    @Override
+    public boolean returnBook(Member member, Book book) {
         if (member.getIssuedBooks().contains(book)) {
             bookList.add(book);
             member.removeIssuedBook(book);
@@ -130,35 +133,25 @@ public class Library implements ILibrary {
         return false;
     }
 
-    public static void searchBook(Book book) {
-        try (Scanner sc = new Scanner(System.in)) {
-            LOGGER.info("search by title");
-            String searchTitle = sc.nextLine();                         //This may throw exception if user don't put input
+    public static List<Book> searchBook(String bookTitle) throws Exception {
             for (Book i : bookList.getAll()) {
-                if (book.getTitle().contains(searchTitle)) {
-                    LOGGER.info("Search result:  " + book);
+                boolean isFound = i.getTitle().contains(bookTitle);
+                if (isFound) {
+                    List<Book> bookFound = new ArrayList<>();
+                    bookFound.add(i);
+                    return bookFound;
                 }
-            }
-            LOGGER.info("no Book found");
-        } catch (Exception e) {
-            LOGGER.info("Give valid search input");
-        }
+            } throw new Exception("No Book Found");
     }
 
-    @Override public void addNewspaper(Newspaper newspaper) {
+    @Override
+    public void addNewspaper(Newspaper newspaper) {
         try {
-            Scanner sc = new Scanner(System.in);
-            LOGGER.info("Enter name of newspaper");
-            String newspaperTitle = sc.nextLine();
-            LOGGER.info("Enter published of newspaper in yyyy/mm/dd format");
-            String newsDate = sc.next();                                            //This might throw Exception
-            LocalDate localDate = LocalDate.now(ZoneId.systemDefault());
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(newsDate);
-            LocalDate date = LocalDate.parse(newsDate);
-            if (date.isAfter(localDate)) {
+            newspaperList.add(newspaper);
+            Date localDate = Date.from(Instant.now());
+            if (newspaper.getPublishedDate().after(localDate)) {
                 throw new InvalidInputException("Date is invalid");
             }
-            newspaperList.add(newspaper);
         } catch (InvalidInputException e) {
             LOGGER.error("Enter Date in correct format ");
         }
