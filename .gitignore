@@ -31,6 +31,6 @@ bin/
 *.iml
 .idea\
 librarynew.iml
-logs\
 out\
-target\
+target
+logs
