@@ -14,7 +14,7 @@ public class ReadFile {
     URL resource = FileProcessor.class.getClassLoader().getResource("input.txt");
     File file = new File(resource.getFile());
 
-    public int countUniqueWords() {
+    public int countUniqueWords(File file) {
         String[] words = new String[0];
         try {
             String inputToString = FileUtils.readFileToString(file, "UTF-8");
@@ -30,7 +30,7 @@ public class ReadFile {
 
     public void writeCountUniqueWords() {
         try {
-            FileUtils.write(file, "\n No. of Unique Words are: " + Integer.toString(countUniqueWords()), "UTF-8", true);
+            FileUtils.write(file, "\n No. of Unique Words are: " + Integer.toString(countUniqueWords(file)), "UTF-8", true);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
