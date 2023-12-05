@@ -1,6 +1,7 @@
 package utils;
 
 import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.*;
@@ -13,14 +14,12 @@ import org.apache.logging.log4j.Logger;
 
 public class ReadFile {
 
-    ClassLoader classLoader = getClass().getClassLoader();
-    File file;
-
-
-    public int countUniqueWords(String input) {
+    public int countUniqueWords(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file;
         String[] words = new String[0];
         try {
-            file  = new File(Objects.requireNonNull(classLoader.getResource("input.txt")).getFile());
+            file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
             String inputToString = FileUtils.readFileToString(file, "UTF-8");
             if (!inputToString.isBlank()) {
                 words = inputToString.split(" ");
@@ -32,10 +31,12 @@ public class ReadFile {
         return uniqueWords.size();
     }
 
-    public void writeCountUniqueWords() {
+    public void writeCountUniqueWords(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file;
         try {
-            file  = new File(Objects.requireNonNull(classLoader.getResource("input.txt")).getFile());
-            FileUtils.write(file, "\nNo. of Unique Words are: " + countUniqueWords("input.txt"), "UTF-8", true);
+            file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
+            FileUtils.write(file, "\nNo. of Unique Words are: " + countUniqueWords(fileName), "UTF-8", true);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

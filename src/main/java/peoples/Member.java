@@ -55,7 +55,8 @@ public class Member extends Person implements IMember {
         return phoneNo;
     }
 
-    @Override public void addIssuedBook(Book book) {
+    @Override
+    public void addIssuedBook(Book book) {
         issuedBooks.add(book);
     }
 
@@ -63,11 +64,13 @@ public class Member extends Person implements IMember {
         return issuedBooks;
     }
 
-    @Override public int getIssuedBooksCount() {
+    @Override
+    public int getIssuedBooksCount() {
         return issuedBooks.size();
     }
 
-    @Override public void removeIssuedBook(Book book) {
+    @Override
+    public void removeIssuedBook(Book book) {
         issuedBooks.remove(book);
     }
 

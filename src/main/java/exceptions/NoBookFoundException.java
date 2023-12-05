@@ -1,8 +1,8 @@
 package exceptions;
 
-public class NoBookFound extends Exception {
+public class NoBookFoundException extends Exception {
 
-    public NoBookFound(String e){
+    public NoBookFoundException(String e){
         super(e);
     }
 }

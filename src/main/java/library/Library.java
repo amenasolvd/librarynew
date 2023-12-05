@@ -8,9 +8,6 @@ import org.apache.logging.log4j.Logger;
 import peoples.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Library implements ILibrary {
@@ -113,7 +110,7 @@ public class Library implements ILibrary {
     @Override
     public boolean reissue(Member member, Book book) {
         try {
-            this.issue(member, book);
+            issue(member, book);
             return true;
         } catch (BorrowingBookLimitOverException e) {
             LOGGER.error("Your are exceeding borrowing book limit");
@@ -131,7 +128,7 @@ public class Library implements ILibrary {
         return false;
     }
 
-    public static List<Book> searchBook(String bookTitle) throws NoBookFound {
+    public static List<Book> searchBook(String bookTitle) throws NoBookFoundException {
         List<Book> searchResult = new ArrayList<>();
         for (Book i : bookList.getAll()) {
             if (i.getTitle().contains(bookTitle)) {
@@ -139,7 +136,7 @@ public class Library implements ILibrary {
             }
         }
         if (searchResult.isEmpty()) {
-            throw new NoBookFound("No Book found");
+            throw new NoBookFoundException("No Book found");
         }
         return searchResult;
     }
@@ -158,7 +155,7 @@ public class Library implements ILibrary {
     }
 
     public static void printLibraryInfo() {
-        System.out.println("Library Name: " + libraryName + '\'' +
+        LOGGER.info("Library Name: " + libraryName + '\'' +
                 "Library address: " + address + '\'' +
                 "Phone Number: " + phone + '\'' +
                 "Website: " + website + '\'');
