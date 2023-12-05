@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import peoples.Member;
 import utils.ReadFile;
-
 import java.util.Scanner;
 
 public class Main {
@@ -39,7 +38,6 @@ public class Main {
             } catch (NoBookFound e) {
                 LOGGER.info("No Book Found with Title: "+ searchTitle);
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,22 +1,26 @@
 package utils;
 
 import org.apache.commons.io.FileUtils;
-import org.sonatype.aether.spi.io.FileProcessor;
-
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.lang.*;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ReadFile {
-    URL resource = FileProcessor.class.getClassLoader().getResource("input.txt");
-    File file = new File(resource.getFile());
 
-    public int countUniqueWords(File file) {
+    ClassLoader classLoader = getClass().getClassLoader();
+    File file;
+
+
+    public int countUniqueWords(String input) {
         String[] words = new String[0];
         try {
+            file  = new File(Objects.requireNonNull(classLoader.getResource("input.txt")).getFile());
             String inputToString = FileUtils.readFileToString(file, "UTF-8");
             if (!inputToString.isBlank()) {
                 words = inputToString.split(" ");
@@ -30,7 +34,8 @@ public class ReadFile {
 
     public void writeCountUniqueWords() {
         try {
-            FileUtils.write(file, "\n No. of Unique Words are: " + Integer.toString(countUniqueWords(file)), "UTF-8", true);
+            file  = new File(Objects.requireNonNull(classLoader.getResource("input.txt")).getFile());
+            FileUtils.write(file, "\nNo. of Unique Words are: " + countUniqueWords("input.txt"), "UTF-8", true);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
