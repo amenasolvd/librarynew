@@ -8,9 +8,6 @@ import org.apache.logging.log4j.Logger;
 import peoples.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Library implements ILibrary {
@@ -111,11 +108,9 @@ public class Library implements ILibrary {
     }
 
     @Override
-    public boolean reissue(Member member, Book book) throws ReissueNotValidException {
+    public boolean reissue(Member member, Book book) {
         try {
-            int reissueCount = 0;
-            this.issue(member, book);
-            reissueCount++;
+            issue(member, book);
             return true;
         } catch (BorrowingBookLimitOverException e) {
             LOGGER.error("Your are exceeding borrowing book limit");
@@ -133,15 +128,17 @@ public class Library implements ILibrary {
         return false;
     }
 
-    public static List<Book> searchBook(String bookTitle) throws Exception {
-            for (Book i : bookList.getAll()) {
-                boolean isFound = i.getTitle().contains(bookTitle);
-                if (isFound) {
-                    List<Book> bookFound = new ArrayList<>();
-                    bookFound.add(i);
-                    return bookFound;
-                }
-            } throw new Exception("No Book Found");
+    public static List<Book> searchBook(String bookTitle) throws NoBookFoundException {
+        List<Book> searchResult = new ArrayList<>();
+        for (Book i : bookList.getAll()) {
+            if (i.getTitle().contains(bookTitle)) {
+                searchResult.add(i);
+            }
+        }
+        if (searchResult.isEmpty()) {
+            throw new NoBookFoundException("No Book found");
+        }
+        return searchResult;
     }
 
     @Override
@@ -158,7 +155,7 @@ public class Library implements ILibrary {
     }
 
     public static void printLibraryInfo() {
-        System.out.println("Library Name: " + libraryName + '\'' +
+        LOGGER.info("Library Name: " + libraryName + '\'' +
                 "Library address: " + address + '\'' +
                 "Phone Number: " + phone + '\'' +
                 "Website: " + website + '\'');

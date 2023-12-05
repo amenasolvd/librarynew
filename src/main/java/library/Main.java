@@ -1,10 +1,12 @@
 package library;
 
+import exceptions.NoBookFoundException;
 import exceptions.PhoneNoNotValidException;
 import items.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import peoples.Member;
+import utils.ReadFile;
 
 import java.util.Scanner;
 
@@ -27,11 +29,20 @@ public class Main {
         Library.printAllMemberInfo();
         Library.printLibraryInfo();
         try (Scanner sc = new Scanner(System.in)) {
-            LOGGER.info("search by title");
+            LOGGER.info("To Search book, Write title");
             String searchTitle = sc.nextLine();
-            LOGGER.info(Library.searchBook(searchTitle));
+            LOGGER.info("Search Result: ");
+            try {
+                for (Book book : Library.searchBook(searchTitle)) {
+                    LOGGER.info(book);
+                }
+            } catch (NoBookFoundException e) {
+                LOGGER.info("No Book Found with Title: " + searchTitle);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        ReadFile readFile = new ReadFile();
+        readFile.writeCountUniqueWords("input.txt");
     }
 }

@@ -9,7 +9,7 @@ public class Item {
     private String title;
     private String publication;
 
-    public Item(String title,String publication) {
+    public Item(String title, String publication) {
         this.title = title;
         this.itemId = new Random().nextInt(999999 - 10000) + 1000;
         this.publication = publication;
