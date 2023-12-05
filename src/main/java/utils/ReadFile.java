@@ -15,11 +15,10 @@ import org.apache.logging.log4j.Logger;
 public class ReadFile {
 
     public int countUniqueWords(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
         String[] words = new String[0];
         try {
             File file = new
-                    File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
+                    File(Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getFile());
             String inputToString = FileUtils.readFileToString(file, "UTF-8");
             if (!inputToString.isBlank()) {
                 words = inputToString.split(" ");
@@ -32,10 +31,9 @@ public class ReadFile {
     }
 
     public void writeCountUniqueWords(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
         try {
             File file = new
-                    File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
+                    File(Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getFile());
             FileUtils.write(file, "\nNo. of Unique Words are: " + countUniqueWords(fileName), "UTF-8", true);
         } catch (IOException e) {
             e.printStackTrace();
